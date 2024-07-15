@@ -3,6 +3,7 @@ using HotelListing.Data;
 using HotelListing.IRepository;
 using HotelListing.Models;
 using HotelListing.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 namespace HotelListing.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class HotelController : ControllerBase
     {
@@ -48,9 +50,11 @@ namespace HotelListing.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+
         public async Task<IActionResult> GetHotel(int id)
         {
             try
@@ -65,5 +69,5 @@ namespace HotelListing.Controllers
                 return StatusCode(500, "Internal server error, please try again later.");
             }
         }
-    }   
+    }
 }
