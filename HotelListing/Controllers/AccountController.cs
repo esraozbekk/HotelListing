@@ -82,25 +82,12 @@ namespace HotelListing.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
+            if (!await _authManager.ValideteUser(userDTO))
             {
-                if (!await _authManager.ValideteUser(userDTO))
-                {
-                    return Unauthorized();
-                }
-
-                return Accepted(new { Token = await _authManager.CreateToken() });
+                return Unauthorized();
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, $"Something went wrong in the {nameof(Login)}");
-                return Problem($"Something went wrong in the {nameof(Login)}", statusCode: 500);
 
-            }
+            return Accepted(new { Token = await _authManager.CreateToken() });
         }
-
-
     }
-
-
 }
